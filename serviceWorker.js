@@ -28,18 +28,15 @@ self.addEventListener('message', function (event) {
 
 
 function sendMessage(str){
-    self.clients.matchAll()
-        .then(function (clients) {
-            if (clients.length>0) {
-                clients.forEach(function (client) {
-                    client.postMessage(str);
-                })
-            }
-        })
+  self.clients.matchAll()
+      .then(function (clients) {
+          if (clients.length>0) {
+              clients.forEach(function (client) {
+                  client.postMessage(str);
+              })
+          }
+      })
 }
-
-
-
 
 self.addEventListener('fetch', function(event) {
   console.log("fetch")
@@ -54,3 +51,8 @@ self.addEventListener('fetch', function(event) {
     )
   )
 })
+
+
+self.addEventListener('notificationclick', function(event) {
+  sendMessage("关闭了消息");
+});

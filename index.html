@@ -16,6 +16,35 @@
     <div id="tip"></div>
 </body>
     <script>
+        let NTitle = "你好，我是Pwa"
+        let options = {
+            lang:'en-US|zh-cn',
+            body:'这里是body区域，写点东西代表我存在',
+            icon:'https://dagaiwan.com/assets/touch/homescreen144.png',
+            image:'https://dagaiwan.com/assets/touch/homescreen144.png'
+        }
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+        }
+        else if (Notification.permission === "granted") { // 检查用户是否同意接受通知
+            console.log("granted")
+            // If it's okay let's create a notification
+            var notification = new Notification(NTitle,options);
+        }
+        else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function (permission) {
+            // 如果用户同意，就可以向他们发送通知
+            if (permission === "granted") {
+                var notification = new Notification(NTitle,options);
+            }
+            });
+        }
+
+        // notification.onclick = function(event) {
+        //     window.open('https://dagaiwan.com/temp.html');
+        // }
+
+
         tip("脚本启动")
         if ('serviceWorker' in navigator) {
             if (navigator.serviceWorker.controller === null){ //判断是否注册过serviceWorker
