@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="./assets/style/index.css">
+    <link rel="apple-touch-icon" href="./assets//touch/homescreen144.png"/>
+    <title>THIS TITLE</title>
+</head>
+<body>
+    <div class="logo">
+        <img src="./assets/images/logo.png" alt="" id="logo">
+    </div>
+    <div id="tip"></div>
+</body>
+    <script>
+        tip("脚本启动")
+        if ('serviceWorker' in navigator) {
+            if (navigator.serviceWorker.controller === null){ //判断是否注册过serviceWorker
+                window.addEventListener('load', function() { //页面加载完成后注册服务
+                    navigator.serviceWorker.register('./serviceWorker.js').then(function(registration) {
+                        tip('注册成功')
+                    }).catch(function(err) {
+                        tip('注册失败')
+                    });
+                });
+            }
+        }else{
+            tip("浏览器不支持serviceWorkers... ")
+        }
+
+        if(window.fetch?true:false){
+            fetch("./config.json")
+                .then(function(resolve){
+                    resolve.json().then(function(data) {  
+                        //console.log(data)
+                        })
+                })
+                .catch(function(reject){
+                    //console.log(reject)
+                })
+        }
+        
+        document.getElementById('logo').addEventListener('click', function () {
+            navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage('Hello PWA')
+        })
+        navigator.serviceWorker.addEventListener('message', function (e) {
+            tip(e.data)
+        });
+
+
+        //下部提示信息
+        function tip(alertStr){
+            document.getElementById("tip").innerHTML=alertStr
+        }
+    </script>
+</html>
